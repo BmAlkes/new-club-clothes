@@ -13,6 +13,7 @@ const HeaderContainer = styled.div`
 const HeaderTitle = styled.h2`
   font-weight: bold;
   font-size: 1.5rem;
+  cursor: pointer;
 `;
 const HeaderItems = styled.div`
   display: flex;
@@ -25,6 +26,7 @@ const HeaderItem = styled.div`
   font-size: 1rem;
   display: flex;
   align-items: center;
+  cursor: pointer;
 
   &:nth-child(1),
   &:nth-child(2),
