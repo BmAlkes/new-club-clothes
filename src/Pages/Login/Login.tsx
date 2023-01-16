@@ -28,9 +28,12 @@ const Login = () => {
           </CustomButton>
           <LoginSubtitle>Or entre with your Email</LoginSubtitle>
           <LoginInputContainer>
+            <p>Email</p>
             <Input placeholder="Enter your email" type="email" />
           </LoginInputContainer>
+
           <LoginInputContainer>
+            <p>Password</p>
             <Input placeholder="Enter your password" type="password" />
           </LoginInputContainer>
           <CustomButton startIcon={<FiLogIn size={20} />}>Enter</CustomButton>
