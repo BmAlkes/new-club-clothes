@@ -1,4 +1,6 @@
 import React, { ButtonHTMLAttributes } from "react";
+
+// styles
 import { CustomButtonContainer, IconContainer } from "./CustomButton.styles";
 
 interface CustomButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
