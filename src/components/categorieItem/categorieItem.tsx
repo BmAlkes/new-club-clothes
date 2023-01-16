@@ -1,23 +1,24 @@
 import { FunctionComponent } from "react";
-import Category from "../../types/category.types";
-import "./categorieItem.styles.css";
 
-interface CategorieItemProps {
+// Utilities
+import Category from "../../types/category.types";
+
+// Styles
+import { CategoryItemContainer, CategoryName } from "./category-item.styles";
+
+interface CategoryItemProps {
   category: Category;
 }
 
-const CategorieItem: FunctionComponent<CategorieItemProps> = ({ category }) => {
+const CategoryItem: FunctionComponent<CategoryItemProps> = ({ category }) => {
   return (
-    <div
-      className="category-item-container"
-      style={{ backgroundImage: `url(${category.imageUrl}) ` }}
-    >
-      <div className="category-name-container">
+    <CategoryItemContainer backgroundImage={category.imageUrl}>
+      <CategoryName>
         <p>{category.displayName}</p>
-        <p>Explorer</p>
-      </div>
-    </div>
+        <p>Explorar</p>
+      </CategoryName>
+    </CategoryItemContainer>
   );
 };
 
-export default CategorieItem;
+export default CategoryItem;
