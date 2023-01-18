@@ -18,7 +18,9 @@ const Header = () => {
       <HeaderItems>
         <HeaderItem>Explores</HeaderItem>
         <HeaderItem onClick={handleLoginClick}>Login</HeaderItem>
-        <HeaderItem>Create Account</HeaderItem>
+        <HeaderItem onClick={() => navigate("/register")}>
+          Create Account
+        </HeaderItem>
         <HeaderItem>
           <BsCart3 size={25} /> <p style={{ marginLeft: 10 }}>5</p>
         </HeaderItem>

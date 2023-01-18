@@ -15,7 +15,7 @@ const Categories = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const fetchCategory = async () => {
     try {
-      const { data } = await axios.get(`${env.apiUrl}api/category`);
+      const { data } = await axios.get(`${env.apiUrl}/api/category`);
       setCategories(data);
     } catch (error) {
       console.log({ error });
