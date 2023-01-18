@@ -2,10 +2,12 @@ import { BsGoogle } from "react-icons/bs";
 import { FiLogIn } from "react-icons/fi";
 import Input from "../../components/custom-input/Input";
 import { useForm } from "react-hook-form";
+import validator from "validator";
 
 // Components
 import CustomButton from "../../components/custombutton/CustomButton";
 import Header from "../../components/header/header.components";
+import InputError from "../../components/input-error-message/InputError";
 
 //Styles
 import {
@@ -27,6 +29,8 @@ const Login = () => {
     console.log(data);
   };
 
+  console.log({ errors });
+
   return (
     <>
       <Header />
@@ -44,8 +48,19 @@ const Login = () => {
               hasError={!!errors?.email}
               placeholder="Enter your email"
               type="email"
-              {...register("email", { required: true })}
+              {...register("email", {
+                required: true,
+                validate: (value) => {
+                  return validator.isEmail(value);
+                },
+              })}
             />
+            {errors?.email?.type === "required" && (
+              <InputError>email is required</InputError>
+            )}
+            {errors?.email?.type === "validate" && (
+              <InputError>email is not valid</InputError>
+            )}
           </LoginInputContainer>
 
           <LoginInputContainer>
@@ -56,14 +71,13 @@ const Login = () => {
               type="password"
               {...register("password", { required: true })}
             />
+            {errors?.password?.type === "required" && (
+              <InputError>Password is required</InputError>
+            )}
           </LoginInputContainer>
           <CustomButton
-            startIcon={
-              <FiLogIn
-                size={20}
-                onClick={() => handleSubmit(handleSubmitPress)()}
-              />
-            }
+            startIcon={<FiLogIn size={20} />}
+            onClick={() => handleSubmit(handleSubmitPress)()}
           >
             Enter
           </CustomButton>
