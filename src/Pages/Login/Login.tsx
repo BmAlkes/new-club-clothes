@@ -22,9 +22,12 @@ import {
   AuthError,
   AuthErrorCodes,
   createUserWithEmailAndPassword,
+  GoogleAuthProvider,
   signInWithEmailAndPassword,
+  signInWithPopup,
 } from "firebase/auth";
-import { auth } from "../../config/firebase.config";
+import { auth, db, googleProvider } from "../../config/firebase.config";
+import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 
 interface LoginForm {
   email: string;
@@ -46,7 +49,6 @@ const Login = () => {
         data.email,
         data.password
       );
-      console.log(userCredential);
     } catch (error) {
       const _error = error as AuthError;
       if (_error.code === AuthErrorCodes.INVALID_PASSWORD) {
@@ -58,7 +60,30 @@ const Login = () => {
     }
   };
 
-  console.log({ errors });
+  const handleSingInWithGoogle = async () => {
+    try {
+      const userCredentials = await signInWithPopup(auth, googleProvider);
+      const querySnapshot = await getDocs(
+        query(
+          collection(db, "users"),
+          where("id", "==", userCredentials.user.uid)
+        )
+      );
+
+      const user = querySnapshot.docs[0]?.data;
+      if (!user) {
+        const firstname = userCredentials.user.displayName?.split(" ")[0];
+        const lastname = userCredentials.user.displayName?.split(" ")[1];
+        await addDoc(collection(db, "users"), {
+          id: userCredentials.user.uid,
+          email: userCredentials.user.email,
+          firstname,
+          lastname,
+          provider: "google",
+        });
+      }
+    } catch (error) {}
+  };
 
   return (
     <>
@@ -67,7 +92,10 @@ const Login = () => {
       <LoginContainer>
         <LoginContent>
           <LoginHeadline>Enter with your Account</LoginHeadline>
-          <CustomButton startIcon={<BsGoogle size={20} />}>
+          <CustomButton
+            startIcon={<BsGoogle size={20} />}
+            onClick={handleSingInWithGoogle}
+          >
             Enter with Google
           </CustomButton>
           <LoginHeadline></LoginHeadline>

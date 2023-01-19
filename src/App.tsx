@@ -9,9 +9,7 @@ import Login from "./Pages/Login/Login";
 import Signup from "./Pages/SignUp/Signup";
 
 const App = () => {
-  onAuthStateChanged(auth, (user) => {
-    console.log(user);
-  });
+  onAuthStateChanged(auth, (user) => {});
   return (
     <BrowserRouter>
       <Routes>

@@ -51,6 +51,7 @@ const Signup = () => {
         name: data.name,
         lastName: data.lastName,
         email: userCredentials.user.email,
+        provider: "firebase",
       });
     } catch (err) {
       const _error = err as AuthError;
