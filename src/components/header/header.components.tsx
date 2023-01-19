@@ -1,5 +1,7 @@
+import { signOut } from "firebase/auth";
 import { BsCart3 } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import { auth } from "../../config/firebase.config";
 import {
   HeaderContainer,
   HeaderItem,
@@ -18,6 +20,7 @@ const Header = () => {
       <HeaderItems>
         <HeaderItem>Explores</HeaderItem>
         <HeaderItem onClick={handleLoginClick}>Login</HeaderItem>
+        <HeaderItem onClick={() => signOut(auth)}>Logout</HeaderItem>
         <HeaderItem onClick={() => navigate("/register")}>
           Create Account
         </HeaderItem>
