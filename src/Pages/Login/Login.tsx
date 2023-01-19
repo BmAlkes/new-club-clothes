@@ -1,5 +1,6 @@
 import { BsGoogle } from "react-icons/bs";
 import { FiLogIn } from "react-icons/fi";
+import { FaFacebook } from "react-icons/fa";
 import Input from "../../components/custom-input/Input";
 import { useForm } from "react-hook-form";
 import validator from "validator";
@@ -17,6 +18,7 @@ import {
   LoginSubtitle,
   LoginContent,
 } from "./login.styles";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 interface LoginForm {
   email: string;
@@ -30,9 +32,7 @@ const Login = () => {
     handleSubmit,
   } = useForm<LoginForm>();
 
-  const handleSubmitPress = (data: LoginForm) => {
-    console.log(data);
-  };
+  const handleSubmitPress = async (data: LoginForm) => {};
 
   console.log({ errors });
 
@@ -45,6 +45,10 @@ const Login = () => {
           <LoginHeadline>Enter with your Account</LoginHeadline>
           <CustomButton startIcon={<BsGoogle size={20} />}>
             Enter with Google
+          </CustomButton>
+          <LoginHeadline></LoginHeadline>
+          <CustomButton startIcon={<FaFacebook size={20} />}>
+            Enter with Facebook
           </CustomButton>
           <LoginSubtitle>Or entre with your Email</LoginSubtitle>
           <LoginInputContainer>

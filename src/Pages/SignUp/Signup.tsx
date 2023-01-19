@@ -3,7 +3,11 @@ import { FiLogIn } from "react-icons/fi";
 import Input from "../../components/custom-input/Input";
 import { useForm } from "react-hook-form";
 import validator from "validator";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../../config/firebase.config";
+import { addDoc, collection } from "firebase/firestore";
 
+// styles
 import CustomButton from "../../components/custombutton/CustomButton";
 import {
   SignUpContainer,
@@ -30,8 +34,22 @@ const Signup = () => {
     formState: { errors },
   } = useForm<SignUpForm>();
 
-  const handleSubmitPress = (data: SignUpForm) => {
-    console.log(data);
+  const handleSubmitPress = async (data: SignUpForm) => {
+    try {
+      const userCredentials = await createUserWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      );
+      await addDoc(collection(db, "users"), {
+        id: userCredentials.user.uid,
+        name: data.name,
+        lastName: data.lastName,
+        email: userCredentials.user.email,
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
   console.log({ errors });
 
