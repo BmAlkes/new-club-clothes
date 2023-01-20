@@ -26,7 +26,12 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
-import { auth, db, googleProvider } from "../../config/firebase.config";
+import {
+  auth,
+  db,
+  facebookProvider,
+  googleProvider,
+} from "../../config/firebase.config";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 
 interface LoginForm {
@@ -85,6 +90,33 @@ const Login = () => {
     } catch (error) {}
   };
 
+  const handleSinginWithFacebook = async () => {
+    try {
+      const userCredentials = await signInWithPopup(auth, facebookProvider);
+      const querySnapshot = await getDocs(
+        query(
+          collection(db, "users"),
+          where("id", "==", userCredentials.user.uid)
+        )
+      );
+
+      const user = querySnapshot.docs[0]?.data;
+      if (!user) {
+        const firstname = userCredentials.user.displayName?.split(" ")[0];
+        const lastname = userCredentials.user.displayName?.split(" ")[1];
+        await addDoc(collection(db, "users"), {
+          id: userCredentials.user.uid,
+          email: userCredentials.user.email,
+          firstname,
+          lastname,
+          provider: "Facebook",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <Header />
@@ -99,7 +131,10 @@ const Login = () => {
             Enter with Google
           </CustomButton>
           <LoginHeadline></LoginHeadline>
-          <CustomButton startIcon={<FaFacebook size={20} />}>
+          <CustomButton
+            startIcon={<FaFacebook size={20} />}
+            onClick={handleSinginWithFacebook}
+          >
             Enter with Facebook
           </CustomButton>
           <LoginSubtitle>Or entre with your Email</LoginSubtitle>
