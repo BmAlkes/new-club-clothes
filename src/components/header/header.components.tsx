@@ -13,17 +13,17 @@ import {
 
 const Header = () => {
   const { isAutheticated, currentUser } = useContext(UserContext);
-  const userName = currentUser?.firstName;
   const navigate = useNavigate();
   const handleLoginClick = () => {
     navigate("/login");
   };
-  console.log(userName);
   return (
     <HeaderContainer>
       <HeaderTitle onClick={() => navigate("/")}> Club Clothings</HeaderTitle>
       <HeaderItems>
-        {isAutheticated && <HeaderItem>{userName}</HeaderItem>}
+        {isAutheticated && (
+          <HeaderItem>{`Welcome ${currentUser?.firstName}`}</HeaderItem>
+        )}
         <HeaderItem>Explores</HeaderItem>
 
         {!isAutheticated && (

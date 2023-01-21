@@ -4,6 +4,7 @@ import { FaFacebook } from "react-icons/fa";
 import Input from "../../components/custom-input/Input";
 import { useForm } from "react-hook-form";
 import validator from "validator";
+import { useEffect, useContext } from "react";
 
 // Components
 import CustomButton from "../../components/custombutton/CustomButton";
@@ -21,8 +22,6 @@ import {
 import {
   AuthError,
   AuthErrorCodes,
-  createUserWithEmailAndPassword,
-  GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
@@ -33,6 +32,8 @@ import {
   googleProvider,
 } from "../../config/firebase.config";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { UserContext } from "../../contexts/UserContext";
+import { Navigate, useNavigate } from "react-router-dom";
 
 interface LoginForm {
   email: string;
@@ -46,6 +47,15 @@ const Login = () => {
     handleSubmit,
     setError,
   } = useForm<LoginForm>();
+
+  const { isAutheticated } = useContext(UserContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAutheticated) {
+      navigate("/");
+    }
+  }, [isAutheticated]);
 
   const handleSubmitPress = async (data: LoginForm) => {
     try {

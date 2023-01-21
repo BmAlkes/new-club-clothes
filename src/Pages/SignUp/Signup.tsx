@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { FiLogIn } from "react-icons/fi";
 import Input from "../../components/custom-input/Input";
 import { useForm } from "react-hook-form";
@@ -21,6 +21,8 @@ import {
 } from "./SignUp.styles";
 import Header from "../../components/header/header.components";
 import InputError from "../../components/input-error-message/InputError";
+import { UserContext } from "../../contexts/UserContext";
+import { Navigate, useNavigate } from "react-router-dom";
 
 interface SignUpForm {
   name: string;
@@ -38,6 +40,16 @@ const Signup = () => {
     setError,
     formState: { errors },
   } = useForm<SignUpForm>();
+  const watchPassword = watch("password");
+
+  const { isAutheticated } = useContext(UserContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAutheticated) {
+      navigate("/");
+    }
+  }, [isAutheticated]);
 
   const handleSubmitPress = async (data: SignUpForm) => {
     try {
@@ -61,7 +73,6 @@ const Signup = () => {
     }
   };
 
-  const watchPassword = watch("password");
   return (
     <>
       <Header />
