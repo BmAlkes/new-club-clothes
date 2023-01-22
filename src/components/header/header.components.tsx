@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { BsCart3 } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../config/firebase.config";
+import { CartContext } from "../../contexts/CartContext";
 import { UserContext } from "../../contexts/UserContext";
 import {
   HeaderContainer,
@@ -12,6 +13,7 @@ import {
 } from "./header.styles";
 
 const Header = () => {
+  const { toggleCart, products } = useContext(CartContext);
   const { isAutheticated, currentUser } = useContext(UserContext);
   const navigate = useNavigate();
   const handleLoginClick = () => {
@@ -35,8 +37,9 @@ const Header = () => {
         {isAutheticated && (
           <HeaderItem onClick={() => signOut(auth)}>Logout</HeaderItem>
         )}
-        <HeaderItem>
-          <BsCart3 size={25} /> <p style={{ marginLeft: 10 }}>5</p>
+        <HeaderItem onClick={toggleCart}>
+          <BsCart3 size={25} />{" "}
+          <p style={{ marginLeft: 10 }}>{products.length}</p>
         </HeaderItem>
       </HeaderItems>
     </HeaderContainer>
