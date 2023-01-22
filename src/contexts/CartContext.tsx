@@ -25,6 +25,23 @@ const CartContextProvide: React.FC<ChildrenProps> = ({ children }) => {
   const [products, setProducts] = useState<CartProduct[]>([]);
 
   const addProductToCart = (product: Product) => {
+    //verificar se o produto ja esta no carrinho
+
+    const productAlreadyInCart = products.some(
+      (item) => item.id === product.id
+    );
+
+    // se estiver aumentar quantidade
+    if (productAlreadyInCart) {
+      return setProducts((products) =>
+        products.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        )
+      );
+    }
+    // se nao adiciona-lo
     setProducts((prevState) => [...prevState, { ...product, quantity: 1 }]);
   };
 
