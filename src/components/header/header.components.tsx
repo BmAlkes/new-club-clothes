@@ -22,7 +22,7 @@ const Header = () => {
     <HeaderContainer>
       <HeaderTitle onClick={() => navigate("/")}> Club Clothings</HeaderTitle>
       <HeaderItems>
-        <HeaderItem>Explores</HeaderItem>
+        <HeaderItem onClick={() => navigate("/explorer")}>Explores</HeaderItem>
 
         {!isAutheticated && (
           <>
