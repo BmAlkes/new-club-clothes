@@ -1,16 +1,20 @@
 import React, { useContext, useEffect } from "react";
 import { CategoryContext } from "../../contexts/CategorieContext";
 import CategoryOverview from "../Category-overview/categorieOverview";
+import Loading from "../loading/Loading.component";
 import { Container } from "./CategoriesOverview.styles";
 
 const CategoriesOverview = () => {
-  const { categories, fetchCategories } = useContext(CategoryContext);
+  const { categories, fetchCategories, isLoading } =
+    useContext(CategoryContext);
 
   useEffect(() => {
     if (categories.length === 0) {
       fetchCategories();
     }
   }, []);
+
+  if (isLoading) return <Loading />;
   return (
     <Container>
       {categories.map((category) => (
