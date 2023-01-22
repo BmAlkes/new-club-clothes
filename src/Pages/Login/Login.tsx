@@ -4,7 +4,7 @@ import { FaFacebook } from "react-icons/fa";
 import Input from "../../components/custom-input/Input";
 import { useForm } from "react-hook-form";
 import validator from "validator";
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 
 // Components
 import CustomButton from "../../components/custombutton/CustomButton";
@@ -34,6 +34,7 @@ import {
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { UserContext } from "../../contexts/UserContext";
 import { Navigate, useNavigate } from "react-router-dom";
+import Loading from "../../components/loading/Loading.component";
 
 interface LoginForm {
   email: string;
@@ -48,6 +49,8 @@ const Login = () => {
     setError,
   } = useForm<LoginForm>();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const { isAutheticated } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -59,24 +62,34 @@ const Login = () => {
 
   const handleSubmitPress = async (data: LoginForm) => {
     try {
+      setIsLoading(true);
       const userCredential = await signInWithEmailAndPassword(
         auth,
         data.email,
         data.password
       );
+      await addDoc(collection(db, "users"), {
+        id: userCredential.user.uid,
+        email: userCredential.user.email,
+        provider: "firebase",
+      });
     } catch (error) {
       const _error = error as AuthError;
       if (_error.code === AuthErrorCodes.INVALID_PASSWORD) {
         return setError("password", { type: "wrongPassword" });
       }
+
       if (_error.code === AuthErrorCodes.USER_DELETED) {
         return setError("email", { type: "notFound" });
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleSingInWithGoogle = async () => {
     try {
+      setIsLoading(true);
       const userCredentials = await signInWithPopup(auth, googleProvider);
       const querySnapshot = await getDocs(
         query(
@@ -97,11 +110,15 @@ const Login = () => {
           provider: "google",
         });
       }
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleSinginWithFacebook = async () => {
     try {
+      setIsLoading(true);
       const userCredentials = await signInWithPopup(auth, facebookProvider);
       const querySnapshot = await getDocs(
         query(
@@ -124,12 +141,16 @@ const Login = () => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <>
       <Header />
+
+      {isLoading && <Loading />}
 
       <LoginContainer>
         <LoginContent>

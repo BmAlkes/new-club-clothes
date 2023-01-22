@@ -17,14 +17,11 @@ const Header = () => {
   const handleLoginClick = () => {
     navigate("/login");
   };
-  console.log(currentUser?.firstname);
+  console.log(currentUser);
   return (
     <HeaderContainer>
       <HeaderTitle onClick={() => navigate("/")}> Club Clothings</HeaderTitle>
       <HeaderItems>
-        {isAutheticated && (
-          <HeaderItem>{`Welcome ${currentUser?.firstname} ${currentUser?.lastname}`}</HeaderItem>
-        )}
         <HeaderItem>Explores</HeaderItem>
 
         {!isAutheticated && (

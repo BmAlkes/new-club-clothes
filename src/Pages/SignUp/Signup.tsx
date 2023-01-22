@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FiLogIn } from "react-icons/fi";
 import Input from "../../components/custom-input/Input";
 import { useForm } from "react-hook-form";
@@ -23,6 +23,7 @@ import Header from "../../components/header/header.components";
 import InputError from "../../components/input-error-message/InputError";
 import { UserContext } from "../../contexts/UserContext";
 import { Navigate, useNavigate } from "react-router-dom";
+import Loading from "../../components/loading/Loading.component";
 
 interface SignUpForm {
   name: string;
@@ -41,6 +42,7 @@ const Signup = () => {
     formState: { errors },
   } = useForm<SignUpForm>();
   const watchPassword = watch("password");
+  const [isLoading, setLoading] = useState(false);
 
   const { isAutheticated } = useContext(UserContext);
   const navigate = useNavigate();
@@ -53,6 +55,7 @@ const Signup = () => {
 
   const handleSubmitPress = async (data: SignUpForm) => {
     try {
+      setLoading(true);
       const userCredentials = await createUserWithEmailAndPassword(
         auth,
         data.email,
@@ -70,6 +73,8 @@ const Signup = () => {
       if (_error.code === AuthErrorCodes.EMAIL_EXISTS) {
         return setError("email", { type: "alreadyInUse" });
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -77,6 +82,7 @@ const Signup = () => {
     <>
       <Header />
 
+      {isLoading && <Loading />}
       <SignUpContainer>
         <SignUpContent>
           <SignUpHeadline>Create your Account</SignUpHeadline>
