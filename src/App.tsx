@@ -15,6 +15,7 @@ import Loading from "./components/loading/Loading.component";
 import Explore from "./Pages/Explore/Explore";
 import CategoryDetailsPage from "./Pages/CategorieDetails/CategoryDetails";
 import Cart from "./components/cart/Cart";
+import CheckouPage from "./Pages/Checkout/checkouPage";
 
 const App = () => {
   const [isInitializing, setIsInitialized] = useState(true);
@@ -53,6 +54,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Signup />} />
         <Route path="/explorer" element={<Explore />} />
+        <Route path="/checkout" element={<CheckouPage />} />
         <Route path="/category/:id" element={<CategoryDetailsPage />} />
       </Routes>
       <Cart />
