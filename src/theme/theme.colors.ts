@@ -13,6 +13,7 @@ const Colors = {
     placeholder: "#6C757D",
   },
   error: "#FF6A6A",
+  sucess: "#198754",
 };
 
 export default Colors;

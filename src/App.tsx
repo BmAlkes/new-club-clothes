@@ -17,6 +17,7 @@ import CategoryDetailsPage from "./Pages/CategorieDetails/CategoryDetails";
 import Cart from "./components/cart/Cart";
 import CheckouPage from "./Pages/Checkout/checkouPage";
 import Authetication from "./components/authetication/authetication";
+import PaymentConfirmation from "./Pages/PaymentConfirmation/PaymentConfirmation";
 
 const App = () => {
   const [isInitializing, setIsInitialized] = useState(true);
@@ -63,6 +64,7 @@ const App = () => {
             </Authetication>
           }
         />
+        <Route path="/payment-confirmation" element={<PaymentConfirmation />} />
         <Route path="/category/:id" element={<CategoryDetailsPage />} />
       </Routes>
       <Cart />
