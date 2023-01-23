@@ -7,6 +7,7 @@ interface ICartContext {
   products: CartProduct[];
   toggleCart: () => void;
   addProductToCart: (product: Product) => void;
+  removeProductFromCart: (productId: string) => void;
 }
 
 interface ChildrenProps {
@@ -18,6 +19,7 @@ export const CartContext = createContext<ICartContext>({
   products: [],
   toggleCart: () => {},
   addProductToCart: () => {},
+  removeProductFromCart: () => {},
 });
 
 const CartContextProvide: React.FC<ChildrenProps> = ({ children }) => {
@@ -49,9 +51,21 @@ const CartContextProvide: React.FC<ChildrenProps> = ({ children }) => {
     setIsVisible((prevState) => !prevState);
   };
 
+  const removeProductFromCart = (ProductId: string) => {
+    setProducts((products) =>
+      products.filter((product) => product.id !== ProductId)
+    );
+  };
+
   return (
     <CartContext.Provider
-      value={{ isVisible, products, toggleCart, addProductToCart }}
+      value={{
+        isVisible,
+        products,
+        toggleCart,
+        addProductToCart,
+        removeProductFromCart,
+      }}
     >
       {children}
     </CartContext.Provider>
