@@ -12,7 +12,8 @@ import { BsCart } from "react-icons/bs";
 import { CartContext } from "../../contexts/CartContext";
 
 const Cart = () => {
-  const { isVisible, toggleCart, products } = useContext(CartContext);
+  const { isVisible, toggleCart, products, productsTotalPrice } =
+    useContext(CartContext);
   return (
     <CartContainer isVisible={isVisible}>
       <CartEscapeArea onClick={toggleCart} />
@@ -21,7 +22,7 @@ const Cart = () => {
         {products.map((product) => (
           <CartItem key={product.id} product={product} />
         ))}
-        <CartTotal>Total: 999</CartTotal>
+        <CartTotal>{`Total:  ₪ ${productsTotalPrice}`}</CartTotal>
         <CustomButton startIcon={<BsCart size={36} />}>
           Go to Checkout
         </CustomButton>

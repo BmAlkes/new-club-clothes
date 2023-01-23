@@ -1,4 +1,4 @@
-import { Children, createContext, useState } from "react";
+import { Children, createContext, useMemo, useState } from "react";
 import CartProduct from "../types/cart.types";
 import Product from "../types/product.types";
 
@@ -10,6 +10,7 @@ interface ICartContext {
   removeProductFromCart: (productId: string) => void;
   increaseProductQuantity: (productId: string) => void;
   decreaseProductQuantity: (productId: string) => void;
+  productsTotalPrice: Number;
 }
 
 interface ChildrenProps {
@@ -24,11 +25,18 @@ export const CartContext = createContext<ICartContext>({
   removeProductFromCart: () => {},
   increaseProductQuantity: () => {},
   decreaseProductQuantity: () => {},
+  productsTotalPrice: 0,
 });
 
 const CartContextProvide: React.FC<ChildrenProps> = ({ children }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [products, setProducts] = useState<CartProduct[]>([]);
+
+  const productsTotalPrice = useMemo(() => {
+    return products.reduce((acc, currentProduct) => {
+      return acc + currentProduct.price * currentProduct.quantity;
+    }, 0);
+  }, [products]);
 
   const addProductToCart = (product: Product) => {
     //verificar se o produto ja esta no carrinho
@@ -92,6 +100,7 @@ const CartContextProvide: React.FC<ChildrenProps> = ({ children }) => {
         removeProductFromCart,
         increaseProductQuantity,
         decreaseProductQuantity,
+        productsTotalPrice,
       }}
     >
       {children}
