@@ -15,9 +15,20 @@ interface CartItemProps {
 }
 
 const CartItem: React.FC<CartItemProps> = ({ product }) => {
-  const { removeProductFromCart } = useContext(CartContext);
+  const {
+    removeProductFromCart,
+    increaseProductQuantity,
+    decreaseProductQuantity,
+  } = useContext(CartContext);
   const handleRemoveClick = () => {
     removeProductFromCart(product.id);
+  };
+
+  const handleIncrease = () => {
+    increaseProductQuantity(product.id);
+  };
+  const handleDecrease = () => {
+    decreaseProductQuantity(product.id);
   };
   return (
     <CartItemContainer>
@@ -26,9 +37,9 @@ const CartItem: React.FC<CartItemProps> = ({ product }) => {
         <p>{product.name}</p>
         <p>₪ {product.price}</p>
         <CartItemQuantity>
-          <AiOutlineMinus size={20} />
+          <AiOutlineMinus size={20} onClick={handleDecrease} />
           <p>{product.quantity}</p>
-          <AiOutlinePlus size={20} />
+          <AiOutlinePlus size={20} onClick={handleIncrease} />
         </CartItemQuantity>
       </CartItemInfo>
       <RemoveButton onClick={handleRemoveClick}>
