@@ -7,6 +7,9 @@ interface ProductImageProps {
 export const ProductContainer = styled.div`
   display: flex;
   flex-direction: column;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 export const ProductInfo = styled.div`
