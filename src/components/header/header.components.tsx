@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { CartContext } from "../../contexts/CartContext";
 import rootReducer from "../../store/root-reducer";
-import userReducer from "../../store/reducers/user.reducer";
+import userReducer from "../../store/reducers/users/user.reducer";
 import {
   HeaderContainer,
   HeaderItem,
@@ -14,6 +14,7 @@ import {
 import { useDispatch } from "react-redux";
 import { signOut } from "firebase/auth";
 import { auth } from "../../config/firebase.config";
+import { logoutUser } from "../../store/reducers/users/user.actions";
 
 const Header = () => {
   const { toggleCart, products } = useContext(CartContext);
@@ -29,7 +30,7 @@ const Header = () => {
   };
 
   const handleSignOutClick = () => {
-    dispatch({ type: "LOGOUT_USER" });
+    dispatch(logoutUser());
     signOut(auth);
   };
 

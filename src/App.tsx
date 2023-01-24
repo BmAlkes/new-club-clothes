@@ -18,7 +18,8 @@ import CheckouPage from "./Pages/Checkout/checkouPage";
 import Authetication from "./components/authetication/authetication";
 import PaymentConfirmation from "./Pages/PaymentConfirmation/PaymentConfirmation";
 import { useDispatch, useSelector } from "react-redux";
-import userReducer from "./store/reducers/user.reducer";
+import userReducer from "./store/reducers/users/user.reducer";
+import { loginUser, logoutUser } from "./store/reducers/users/user.actions";
 
 const App = () => {
   const [isInitializing, setIsInitialized] = useState(true);
@@ -35,7 +36,7 @@ const App = () => {
 
       const isSignout = isAuthenticated && !user;
       if (isSignout) {
-        dispatch({ type: "LOGOUT_USER" });
+        dispatch(logoutUser());
         return setIsInitialized(false);
       }
       // se o usuario for nulo no contexto e nao for nulo no firebase devemos fazer login
@@ -49,7 +50,7 @@ const App = () => {
           )
         );
         const userFromFireStore = querySnapshot.docs[0]?.data();
-        dispatch({ type: "LOGIN_USER", payload: userFromFireStore });
+        dispatch(loginUser(userFromFireStore));
         return setIsInitialized(false);
       }
       return setIsInitialized(false);

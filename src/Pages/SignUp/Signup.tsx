@@ -26,7 +26,7 @@ import { useNavigate } from "react-router-dom";
 import Loading from "../../components/loading/Loading.component";
 import { useSelector } from "react-redux";
 import rootReducer from "../../store/root-reducer";
-import userReducer from "../../store/reducers/user.reducer";
+import userReducer from "../../store/reducers/users/user.reducer";
 
 interface SignUpForm {
   name: string;

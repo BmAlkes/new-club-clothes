@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 // Utilities
 import rootReducer from "../../store/root-reducer";
-import userReducer from "../../store/reducers/user.reducer";
+import userReducer from "../../store/reducers/users/user.reducer";
 
 // Components
 import Header from "../header/header.components";
