@@ -1,32 +1,45 @@
-import { signOut } from "firebase/auth";
 import { useContext } from "react";
 import { BsCart3 } from "react-icons/bs";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../../config/firebase.config";
 import { CartContext } from "../../contexts/CartContext";
-import { UserContext } from "../../contexts/UserContext";
+import rootReducer from "../../store/root-reducer";
+import userReducer from "../../store/reducers/user.reducer";
 import {
   HeaderContainer,
   HeaderItem,
   HeaderItems,
   HeaderTitle,
 } from "./header.styles";
+import { useDispatch } from "react-redux";
+import { signOut } from "firebase/auth";
+import { auth } from "../../config/firebase.config";
 
 const Header = () => {
   const { toggleCart, products } = useContext(CartContext);
-  const { isAutheticated, currentUser } = useContext(UserContext);
+
+  const dispatch = useDispatch();
+
+  const { isAuthenticated } = useSelector(
+    (rootReducer: any) => rootReducer.userReducer
+  );
   const navigate = useNavigate();
   const handleLoginClick = () => {
     navigate("/login");
   };
-  console.log(currentUser);
+
+  const handleSignOutClick = () => {
+    dispatch({ type: "LOGOUT_USER" });
+    signOut(auth);
+  };
+
   return (
     <HeaderContainer>
       <HeaderTitle onClick={() => navigate("/")}> Club Clothings</HeaderTitle>
       <HeaderItems>
         <HeaderItem onClick={() => navigate("/explorer")}>Explores</HeaderItem>
 
-        {!isAutheticated && (
+        {!isAuthenticated && (
           <>
             <HeaderItem onClick={handleLoginClick}>Login</HeaderItem>
             <HeaderItem onClick={() => navigate("/register")}>
@@ -34,8 +47,8 @@ const Header = () => {
             </HeaderItem>
           </>
         )}
-        {isAutheticated && (
-          <HeaderItem onClick={() => signOut(auth)}>Logout</HeaderItem>
+        {isAuthenticated && (
+          <HeaderItem onClick={handleSignOutClick}>Logout</HeaderItem>
         )}
         <HeaderItem onClick={toggleCart}>
           <BsCart3 size={25} />{" "}

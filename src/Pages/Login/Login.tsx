@@ -33,8 +33,11 @@ import {
 } from "../../config/firebase.config";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { UserContext } from "../../contexts/UserContext";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Loading from "../../components/loading/Loading.component";
+import { useSelector } from "react-redux";
+import rootReducer from "../../store/root-reducer";
+import userReducer from "../../store/reducers/user.reducer";
 
 interface LoginForm {
   email: string;
@@ -50,15 +53,17 @@ const Login = () => {
   } = useForm<LoginForm>();
 
   const [isLoading, setIsLoading] = useState(false);
+  const { isAuthenticated } = useSelector(
+    (rootReducer: any) => rootReducer.userReducer
+  );
 
-  const { isAutheticated } = useContext(UserContext);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isAutheticated) {
+    if (isAuthenticated) {
       navigate("/");
     }
-  }, [isAutheticated]);
+  }, [isAuthenticated]);
 
   const handleSubmitPress = async (data: LoginForm) => {
     try {

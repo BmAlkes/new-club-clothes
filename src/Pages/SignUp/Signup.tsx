@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiLogIn } from "react-icons/fi";
 import Input from "../../components/custom-input/Input";
 import { useForm } from "react-hook-form";
@@ -21,9 +21,12 @@ import {
 } from "./SignUp.styles";
 import Header from "../../components/header/header.components";
 import InputError from "../../components/input-error-message/InputError";
-import { UserContext } from "../../contexts/UserContext";
-import { Navigate, useNavigate } from "react-router-dom";
+
+import { useNavigate } from "react-router-dom";
 import Loading from "../../components/loading/Loading.component";
+import { useSelector } from "react-redux";
+import rootReducer from "../../store/root-reducer";
+import userReducer from "../../store/reducers/user.reducer";
 
 interface SignUpForm {
   name: string;
@@ -43,15 +46,16 @@ const Signup = () => {
   } = useForm<SignUpForm>();
   const watchPassword = watch("password");
   const [isLoading, setLoading] = useState(false);
-
-  const { isAutheticated } = useContext(UserContext);
+  const { isAuthenticated } = useSelector(
+    (rootReducer: any) => rootReducer.userReducer
+  );
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isAutheticated) {
+    if (isAuthenticated) {
       navigate("/");
     }
-  }, [isAutheticated]);
+  }, [isAuthenticated]);
 
   const handleSubmitPress = async (data: SignUpForm) => {
     try {

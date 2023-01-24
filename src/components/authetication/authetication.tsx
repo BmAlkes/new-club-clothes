@@ -1,8 +1,10 @@
-import React, { FunctionComponent, useContext, useEffect } from "react";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 // Utilities
-import { UserContext } from "../../contexts/UserContext";
+import rootReducer from "../../store/root-reducer";
+import userReducer from "../../store/reducers/user.reducer";
 
 // Components
 import Header from "../header/header.components";
@@ -13,19 +15,21 @@ interface Props {
 }
 
 const AuthenticationGuard: React.FC<Props> = ({ children }) => {
-  const { isAutheticated } = useContext(UserContext);
+  const { isAuthenticated } = useSelector(
+    (rootReducer: any) => rootReducer.userReducer
+  );
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isAutheticated) {
+    if (!isAuthenticated) {
       setTimeout(() => {
         navigate("/login");
       }, 3000);
     }
-  }, [isAutheticated]);
+  }, [isAuthenticated]);
 
-  if (!isAutheticated) {
+  if (!isAuthenticated) {
     return (
       <>
         <Header />
